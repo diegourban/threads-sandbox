@@ -1,4 +1,4 @@
-package br.com.urban.sandbox.threads_sandbox;
+package br.com.urban.sandbox.threads_sandbox.threads2.servidor;
 
 import java.io.IOException;
 import java.net.ServerSocket;

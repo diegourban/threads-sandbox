@@ -1,4 +1,4 @@
-package br.com.urban.sandbox.threads_sandbox;
+package br.com.urban.sandbox.threads_sandbox.threads1;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
