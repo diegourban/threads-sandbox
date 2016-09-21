@@ -1,6 +1,8 @@
 package br.com.urban.sandbox.threads_sandbox.threads2.servidor;
 
+import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class DistribuirTarefas implements Runnable {
 
@@ -12,15 +14,19 @@ public class DistribuirTarefas implements Runnable {
 
 	@Override
 	public void run() {
-		
-		System.out.println("Distribuindo tarefas para " + socket);
-		
 		try {
-			Thread.sleep(20000);
-		} catch (InterruptedException e) {
+			System.out.println("Distribuindo tarefas para " + socket);
+
+			Scanner entrada = new Scanner(socket.getInputStream());
+			while(entrada.hasNextLine()) {
+				System.out.println("Recebendo comando: " + entrada.nextLine());
+			}
+
+			entrada.close();
+		}  catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }
