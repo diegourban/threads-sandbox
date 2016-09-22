@@ -13,7 +13,7 @@ public class ServidorTarefas {
 		ServerSocket servidor = new ServerSocket(12345);
 		
 		//ExecutorService threadPool = Executors.newFixedThreadPool(2);
-		ExecutorService threadPool = Executors.newCachedThreadPool(); // cresce dinamicamente
+		ExecutorService threadPool = Executors.newCachedThreadPool(); // cresçe dinamicamente
 		
 		while(true){
 			Socket socket = servidor.accept();
@@ -22,6 +22,8 @@ public class ServidorTarefas {
 			DistribuirTarefas distribuirTarefas = new DistribuirTarefas(socket);
 			threadPool.execute(distribuirTarefas);
 		}
+		
+		
 	}
 
 }
