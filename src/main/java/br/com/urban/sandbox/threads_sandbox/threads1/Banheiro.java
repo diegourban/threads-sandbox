@@ -1,13 +1,10 @@
 package br.com.urban.sandbox.threads_sandbox.threads1;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 public class Banheiro {
 	
 	private boolean ehSujo = true;
 
-	private Lock lock = new ReentrantLock();
+	//private Lock lock = new ReentrantLock();
 
 	public void fazNumero1() {
 		String name = Thread.currentThread().getName();

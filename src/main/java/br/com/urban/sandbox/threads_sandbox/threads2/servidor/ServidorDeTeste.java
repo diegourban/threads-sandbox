@@ -4,6 +4,11 @@ public class ServidorDeTeste {
 
 	// atributo e main comentados
 	private boolean estaRodando;
+	
+	public static void main(String[] args) {
+		ServidorDeTeste servidorDeTeste = new ServidorDeTeste();
+		servidorDeTeste.rodar();
+	}
 
 	private void rodar() {
 		try {

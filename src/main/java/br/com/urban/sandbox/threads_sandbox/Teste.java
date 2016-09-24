@@ -1,6 +1,5 @@
 package br.com.urban.sandbox.threads_sandbox;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class Teste {

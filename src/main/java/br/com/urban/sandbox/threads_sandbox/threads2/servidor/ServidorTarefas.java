@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ServidorTarefas {
@@ -18,16 +19,28 @@ public class ServidorTarefas {
 	//private volatile boolean estaRodando;
 	
 	private AtomicBoolean estaRodando; // wrapper de volatile boolean
+	
+	private BlockingQueue<String> filaComandos;
 
 
 	public ServidorTarefas() throws IOException {
 		System.out.println("Iniciando servidor...");
 		servidor = new ServerSocket(12345);
 
-		ThreadFactory defaultFactory = Executors.defaultThreadFactory();
-		threadPool = Executors.newFixedThreadPool(2, new FabricaDeThreads(defaultFactory));
-		//threadPool = Executors.newCachedThreadPool(); // cresçe dinamicamente
+		//ThreadFactory defaultFactory = Executors.defaultThreadFactory();
+		//threadPool = Executors.newFixedThreadPool(2, new FabricaDeThreads(defaultFactory));
+		threadPool = Executors.newCachedThreadPool(); // cresçe dinamicamente
 		this.estaRodando = new AtomicBoolean(true);
+		this.filaComandos = new ArrayBlockingQueue<String>(2);
+		iniciarConsumidores();
+	}
+	
+	private void iniciarConsumidores() {
+		int quantidadeConsumidores = 2;
+		for(int i = 0; i < quantidadeConsumidores; i++) {
+			TarefaConsumir tarefa = new TarefaConsumir(filaComandos);
+			threadPool.execute(tarefa);
+		}
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -40,7 +53,7 @@ public class ServidorTarefas {
 			try {
 				Socket socket = servidor.accept();
 				System.out.println("Aceitou novo cliente na porta " + socket.getPort());
-				DistribuirTarefas distribuirTarefas = new DistribuirTarefas(socket, this, threadPool);
+				DistribuirTarefas distribuirTarefas = new DistribuirTarefas(socket, this, this.threadPool, this.filaComandos);
 				threadPool.execute(distribuirTarefas);
 			} catch (SocketException  e) {
 				System.out.println("SocketException, está rodando? " + this.estaRodando);
